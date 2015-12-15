@@ -72,6 +72,12 @@ nnoremap <Down> gj
 nnoremap <Up> gk
 vnoremap <Down> gj
 vnoremap <Up> gk
+nnoremap <Leader>b :buffers<CR>:buffer<Space>
+
+"NeoVim bindings
+if has('nvim')
+    tnoremap <Esc> <c-\><c-n>
+endif
 
 " Options
 set number
