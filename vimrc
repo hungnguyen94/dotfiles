@@ -1,10 +1,10 @@
 if has('vim_starting')
-  if &compatible
-    set nocompatible               " Be iMproved
-  endif
+    if &compatible
+        set nocompatible               " Be iMproved
+    endif
 
-  " Required:
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
+    " Required:
+    set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
 "if has('nvim')
@@ -12,6 +12,12 @@ endif
 "  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 "endif
 
+if has('gui_running')
+    " No toolbar
+    set guioptions-=T
+    set guioptions-=L
+    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+endif
 
 " Required:
 call neobundle#begin(expand('~/.vim/bundle'))
@@ -21,24 +27,50 @@ call neobundle#begin(expand('~/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
-"NeoBundle 'tpope/vim-fugitive'
+" Colorschemes
 NeoBundle 'flazz/vim-colorschemes'
+" Powerline-style bar
 NeoBundle 'bling/vim-airline'
+" File browser within vim
 NeoBundle 'scrooloose/nerdtree'
+" Syntax checker
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-repeat'
-NeoBundle 'majutsushi/tagbar'
-NeoBundle 'ervandew/supertab'
-NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'chriskempson/base16-vim'
-" Syntax highlighting for pig
-NeoBundle 'motus/pig.vim' 
-NeoBundle 'ctrlpvim/ctrlp.vim'
+" Gruvbox colorscheme
 NeoBundle 'morhetz/gruvbox'
-NeoBundle 'romainl/flattened'
+" Easily add brackets, parentheses etc
+NeoBundle 'tpope/vim-surround'
+" Enable repeating with plugin maps
+NeoBundle 'tpope/vim-repeat'
+" Class outline viewer
+NeoBundle 'majutsushi/tagbar'
+" Auto completion using tab
+NeoBundle 'ervandew/supertab'
+" Visually display indent levels
+NeoBundle 'nathanaelkane/vim-indent-guides'
+" Full path fuzzy finder
+NeoBundle 'ctrlpvim/ctrlp.vim'
+" Fancy formatting
 NeoBundle 'godlygeek/tabular'
+" Scala highlighting and more
+NeoBundle 'derekwyatt/vim-scala'
+" Use sbt within vim
+NeoBundle 'ktvoelker/sbt-vim'
+" Simplify motions
+NeoBundle 'easymotion/vim-easymotion'
+" Git wrapper for vim
+NeoBundle 'tpope/vim-fugitive'
+" Insert brackets, parenthesis and quotes in pairs
+NeoBundle 'jiangmiao/auto-pairs'
+" Color parenthesis levels
+NeoBundle 'luochen1990/rainbow'
+" Improved code commenting features
+NeoBundle 'scrooloose/nerdcommenter'
+
+" Syntax highlighting for pig
+"NeoBundle 'motus/pig.vim' 
+"NeoBundle 'romainl/flattened'
+"NeoBundle 'chriskempson/base16-vim'
+"NeoBundle 'altercation/vim-colors-solarized'
 
 " Required:
 call neobundle#end()
@@ -53,20 +85,17 @@ NeoBundleCheck
 " Colorscheme
 syntax on
 hi clear
-colorscheme flattened_dark
+colorscheme gruvbox
 set background=dark
-"let g:solarized_termtrans=1
-hi Normal ctermbg=none
-hi NonText ctermbg=none
 set t_Co=256
+set clipboard=unnamedplus
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 map <Leader>vs :vsplit 
 map <Leader>hs :split 
-" Remap escape key to hj
-inoremap hj <Esc> 
-vnoremap hj <Esc>
+" Remap escape key to jj
+inoremap jj <Esc> 
 " Move between one displayed line, useful for wrapped lines
 nnoremap <Down> gj
 nnoremap <Up> gk
@@ -84,9 +113,10 @@ set number
 set relativenumber
 set cursorline
 set linebreak
-set wrap
-"  Line wrap (number of cols)
-set textwidth=100
+set nowrap
+" Line wrap (number of cols)
+set textwidth=0
+set wrapmargin=0
 set showmatch
 " set spell
 " Highlight all matches
@@ -110,12 +140,18 @@ set autoread
 set complete-=i
 set backspace=indent,eol,start
 
+"###### Vim-indent-guides
+let g:indent_guides_start_level=1
+let g:indent_guides_guide_size=0
+let g:indent_guides_enable_on_vim_startup=1
+
 "###### Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=1
+let g:syntastic_loc_list_height=5
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
 
@@ -126,12 +162,14 @@ let g:syntastic_sql_checkers=['sqlint']
 let g:syntastic_tex_checkers=['chktex']
 let g:syntastic_matlab_checkers=['mlint']
 let g:syntastic_text_checkers=['atdtool']
+let g:syntastic_scala_checkers=['scalac', 'fsc']
 map <Leader>S :SyntasticCheck<CR>
 
 " airline
 set laststatus=2
-let g:airline_powerline_fonts=1
-let g:airline_theme='papercolor'
+let g:airline_powerline_fonts=0
+"let g:airline_theme='papercolor'
+let g:airline_theme='gruvbox'
 " Show buffers on top
 let g:airline#extensions#tabline#enabled = 1
 
@@ -143,9 +181,16 @@ map <Leader>N :NERDTreeToggle<CR>
 map <Leader>t :TagbarToggle<CR>
 
 " Tabularize
-nmap <Leader>]= :Tabularize /=<CR>
-vmap <Leader>]= :Tabularize /=<CR>
 nmap <Leader>]: :Tabularize /:\zs<CR>
 vmap <Leader>]: :Tabularize /:\zs<CR>
 nmap <Leader>] :Tabularize /
 vmap <Leader>] :Tabularize /
+
+" EasyMotion
+map ; <Plug>(easymotion-prefix)
+map  / <Plug>(easymotion-sn)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+
+" Rainbow Parenthesis
+let g:rainbow_active=1
