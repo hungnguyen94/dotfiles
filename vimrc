@@ -7,10 +7,10 @@ if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-"if has('nvim')
-"  let $NVIM_TUI_ENABLE_TRUE_COLOR   = 1
-"  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
-"endif
+if has('nvim')
+  let $NVIM_TUI_ENABLE_TRUE_COLOR   = 1
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+endif
 
 if has('gui_running')
     " No toolbar
@@ -25,8 +25,6 @@ call neobundle#begin(expand('~/.vim/bundle'))
 " Let NeoBundle manage NeoBundle
 " Required:
 NeoBundleFetch 'Shougo/neobundle.vim'
-
-" Add or remove your Bundles here:
 " Colorschemes
 NeoBundle 'flazz/vim-colorschemes'
 " Powerline-style bar
@@ -54,23 +52,28 @@ NeoBundle 'godlygeek/tabular'
 " Scala highlighting and more
 NeoBundle 'derekwyatt/vim-scala'
 " Use sbt within vim
-NeoBundle 'ktvoelker/sbt-vim'
+"NeoBundle 'ktvoelker/sbt-vim'
 " Simplify motions
 NeoBundle 'easymotion/vim-easymotion'
 " Git wrapper for vim
 NeoBundle 'tpope/vim-fugitive'
 " Insert brackets, parenthesis and quotes in pairs
-NeoBundle 'jiangmiao/auto-pairs'
+"NeoBundle 'jiangmiao/auto-pairs'
 " Color parenthesis levels
 NeoBundle 'luochen1990/rainbow'
 " Improved code commenting features
 NeoBundle 'scrooloose/nerdcommenter'
-
+" Smooth scrolling
+"NeoBundle 'yonchu/accelerated-smooth-scroll'
+NeoBundle 'terryma/vim-multiple-cursors'
 " Syntax highlighting for pig
 "NeoBundle 'motus/pig.vim' 
 "NeoBundle 'romainl/flattened'
 "NeoBundle 'chriskempson/base16-vim'
 "NeoBundle 'altercation/vim-colors-solarized'
+
+" Gradle syntax highlighting for vim
+NeoBundle 'tfnico/vim-gradle'
 
 " Required:
 call neobundle#end()
@@ -103,6 +106,9 @@ vnoremap <Down> gj
 vnoremap <Up> gk
 nnoremap <Leader>b :buffers<CR>:buffer<Space>
 
+" Insert a linebreak at the cursor
+nnoremap <Return> i<Return><Esc>
+
 "NeoVim bindings
 if has('nvim')
     tnoremap <Esc> <c-\><c-n>
@@ -113,7 +119,7 @@ set number
 set relativenumber
 set cursorline
 set linebreak
-set nowrap
+"set nowrap
 " Line wrap (number of cols)
 set textwidth=0
 set wrapmargin=0
@@ -144,6 +150,7 @@ set backspace=indent,eol,start
 let g:indent_guides_start_level=1
 let g:indent_guides_guide_size=0
 let g:indent_guides_enable_on_vim_startup=1
+let g:indent_guides_color_change_percent=4
 
 "###### Syntastic
 set statusline+=%#warningmsg#
@@ -167,8 +174,7 @@ map <Leader>S :SyntasticCheck<CR>
 
 " airline
 set laststatus=2
-let g:airline_powerline_fonts=0
-"let g:airline_theme='papercolor'
+let g:airline_powerline_fonts=1
 let g:airline_theme='gruvbox'
 " Show buffers on top
 let g:airline#extensions#tabline#enabled = 1
@@ -187,10 +193,14 @@ nmap <Leader>] :Tabularize /
 vmap <Leader>] :Tabularize /
 
 " EasyMotion
-map ; <Plug>(easymotion-prefix)
+map ` <Plug>(easymotion-prefix)
 map  / <Plug>(easymotion-sn)
 omap / <Plug>(easymotion-tn)
 map  n <Plug>(easymotion-next)
 
 " Rainbow Parenthesis
 let g:rainbow_active=1
+
+" Eclim
+let g:SuperTabDefaultCompletionType = 'context'
+let g:EclimCompletionMethod = 'omnifunc'
