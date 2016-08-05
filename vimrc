@@ -72,8 +72,12 @@ NeoBundle 'terryma/vim-multiple-cursors'
 "NeoBundle 'chriskempson/base16-vim'
 "NeoBundle 'altercation/vim-colors-solarized'
 
+NeoBundle 'niklasl/vim-rdf'
+
 " Gradle syntax highlighting for vim
 NeoBundle 'tfnico/vim-gradle'
+" Ruby vim support
+NeoBundle 'vim-ruby/vim-ruby'
 
 " Required:
 call neobundle#end()
@@ -119,7 +123,7 @@ set number
 set relativenumber
 set cursorline
 set linebreak
-"set nowrap
+set nowrap
 " Line wrap (number of cols)
 set textwidth=0
 set wrapmargin=0
@@ -134,9 +138,9 @@ set incsearch
 " Indent using spaces
 set expandtab 
 set autoindent
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
 set smarttab
 set smartindent
 " Display pressed keys in normal
@@ -204,3 +208,8 @@ let g:rainbow_active=1
 " Eclim
 let g:SuperTabDefaultCompletionType = 'context'
 let g:EclimCompletionMethod = 'omnifunc'
+
+" Vim ruby
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_use_bundler = 1

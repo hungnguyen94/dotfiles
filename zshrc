@@ -56,9 +56,11 @@ git-extras
 npm 
 command-not-found 
 zsh-completions
-gradle
+#gradle
 systemd
 )
+
+unsetopt nomatch
 
 eval `dircolors ~/.dircolors`
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
@@ -67,7 +69,7 @@ autoload -U compinit && compinit
 
 # User configuration
 
-export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
@@ -101,3 +103,8 @@ alias ai="sudo apt install"
 alias ad="sudo apt-get update"
 alias arep="sudo apt-add-repository"
 alias please='sudo $(fc -ln -1)'
+
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+source ~/.rvm/scripts/rvm
+bindkey -v
