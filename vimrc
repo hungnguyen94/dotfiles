@@ -65,7 +65,7 @@ NeoBundle 'luochen1990/rainbow'
 NeoBundle 'scrooloose/nerdcommenter'
 " Smooth scrolling
 "NeoBundle 'yonchu/accelerated-smooth-scroll'
-NeoBundle 'terryma/vim-multiple-cursors'
+"NeoBundle 'terryma/vim-multiple-cursors'
 " Syntax highlighting for pig
 "NeoBundle 'motus/pig.vim' 
 "NeoBundle 'romainl/flattened'
@@ -78,6 +78,9 @@ NeoBundle 'niklasl/vim-rdf'
 NeoBundle 'tfnico/vim-gradle'
 " Ruby vim support
 NeoBundle 'vim-ruby/vim-ruby'
+" Tmux pane switching awareness
+NeoBundle 'christoomey/vim-tmux-navigator'
+NeoBundle 'tmux-plugins/vim-tmux-focus-events'
 
 " Required:
 call neobundle#end()
@@ -96,6 +99,7 @@ colorscheme gruvbox
 set background=dark
 set t_Co=256
 set clipboard=unnamedplus
+hi Normal ctermbg=None
 
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
@@ -136,9 +140,9 @@ set smartcase
 set gdefault
 set incsearch
 " Indent using spaces
-set expandtab 
 set autoindent
-set tabstop=2
+set tabstop=4
+set expandtab 
 set softtabstop=2
 set shiftwidth=2
 set smarttab
@@ -174,6 +178,7 @@ let g:syntastic_tex_checkers=['chktex']
 let g:syntastic_matlab_checkers=['mlint']
 let g:syntastic_text_checkers=['atdtool']
 let g:syntastic_scala_checkers=['scalac', 'fsc']
+let g:syntastic_python_checkers=['mypy', 'pycodestyle', 'Pylint', 'python']
 map <Leader>S :SyntasticCheck<CR>
 
 " airline
@@ -182,6 +187,9 @@ let g:airline_powerline_fonts=1
 let g:airline_theme='gruvbox'
 " Show buffers on top
 let g:airline#extensions#tabline#enabled = 1
+
+"####### YouCompleteMe
+let g:ycm_python_binary_path = 'python'
 
 "##### nerdtree
 "autocmd vimenter * NERDTree
@@ -207,9 +215,12 @@ let g:rainbow_active=1
 
 " Eclim
 let g:SuperTabDefaultCompletionType = 'context'
-let g:EclimCompletionMethod = 'omnifunc'
+"let g:EclimCompletionMethod = 'omnifunc'
+"let g:SuperTabDefaultCompletionType = '<C-X><C-O>'
 
 " Vim ruby
-let g:rubycomplete_classes_in_global = 1
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_use_bundler = 1
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+autocmd FileType ruby,eruby let g:rubycomplete_use_bundler = 1
+autocmd FileType ruby compiler ruby

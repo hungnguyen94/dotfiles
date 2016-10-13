@@ -4,10 +4,13 @@ git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
 echo "Create symlink for vimrc"
 ln -s ~/dotfiles/vimrc ~/.vimrc
 
-echo "Installing oh-my-zsh"
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+echo "Downloading zplug"
+curl -sL zplug.sh/installer | zsh
 echo "Create symlink for zshrc"
 ln -s ~/dotfiles/zshrc ~/.zshrc
 
 echo "Create symlink for dircolors"
 ln -s ~/dotfiles/dircolors ~/.dircolors
+
+echo "Create symlink for tmux"
+ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
