@@ -12,5 +12,7 @@ ln -s ~/dotfiles/zshrc ~/.zshrc
 echo "Create symlink for dircolors"
 ln -s ~/dotfiles/dircolors ~/.dircolors
 
+echo "Downloading tmux plugin manager"
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 echo "Create symlink for tmux"
 ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
