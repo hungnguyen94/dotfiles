@@ -1,112 +1,100 @@
-if has('vim_starting')
-    if &compatible
-        set nocompatible               " Be iMproved
-    endif
-
-    " Required:
-    set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-
 if has('nvim')
-  let $NVIM_TUI_ENABLE_TRUE_COLOR   = 1
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+  let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+  set guicursor=
 endif
 
 if has('gui_running')
-    " No toolbar
-    set guioptions-=T
-    set guioptions-=L
-    set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+  " No toolbar
+  set guioptions-=T
+  set guioptions-=L
 endif
 
 " Required:
-call neobundle#begin(expand('~/.vim/bundle'))
+call plug#begin(expand('~/.vim/plugged'))
 
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
 " Colorschemes
-NeoBundle 'flazz/vim-colorschemes'
+Plug 'flazz/vim-colorschemes'
 " Powerline-style bar
-NeoBundle 'bling/vim-airline'
+Plug 'bling/vim-airline'
+" Airline themes
+Plug 'vim-airline/vim-airline-themes'
 " File browser within vim
-NeoBundle 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " Syntax checker
-NeoBundle 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
+Plug 'w0rp/ale'
 " Gruvbox colorscheme
-NeoBundle 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 " Easily add brackets, parentheses etc
-NeoBundle 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " Enable repeating with plugin maps
-NeoBundle 'tpope/vim-repeat'
-" Class outline viewer
-NeoBundle 'majutsushi/tagbar'
+Plug 'tpope/vim-repeat'
 " Auto completion using tab
-NeoBundle 'ervandew/supertab'
+Plug 'ervandew/supertab'
 " Visually display indent levels
-NeoBundle 'nathanaelkane/vim-indent-guides'
+" Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Yggdroot/indentLine'
 " Full path fuzzy finder
-NeoBundle 'ctrlpvim/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 " Fancy formatting
-NeoBundle 'godlygeek/tabular'
-" Scala highlighting and more
-NeoBundle 'derekwyatt/vim-scala'
-" Use sbt within vim
-"NeoBundle 'ktvoelker/sbt-vim'
+Plug 'godlygeek/tabular'
 " Simplify motions
-NeoBundle 'easymotion/vim-easymotion'
+Plug 'easymotion/vim-easymotion'
 " Git wrapper for vim
-NeoBundle 'tpope/vim-fugitive'
-" Insert brackets, parenthesis and quotes in pairs
-"NeoBundle 'jiangmiao/auto-pairs'
+Plug 'tpope/vim-fugitive'
 " Color parenthesis levels
-NeoBundle 'luochen1990/rainbow'
+Plug 'luochen1990/rainbow'
 " Improved code commenting features
-NeoBundle 'scrooloose/nerdcommenter'
-" Smooth scrolling
-"NeoBundle 'yonchu/accelerated-smooth-scroll'
-"NeoBundle 'terryma/vim-multiple-cursors'
-" Syntax highlighting for pig
-"NeoBundle 'motus/pig.vim' 
-"NeoBundle 'romainl/flattened'
-"NeoBundle 'chriskempson/base16-vim'
-"NeoBundle 'altercation/vim-colors-solarized'
-
-NeoBundle 'niklasl/vim-rdf'
-
-" Gradle syntax highlighting for vim
-NeoBundle 'tfnico/vim-gradle'
+Plug 'scrooloose/nerdcommenter'
 " Ruby vim support
-NeoBundle 'vim-ruby/vim-ruby'
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 " Tmux pane switching awareness
-NeoBundle 'christoomey/vim-tmux-navigator'
-NeoBundle 'tmux-plugins/vim-tmux-focus-events'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+" Code completion engine
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Git for nerdtree
+Plug 'Xuyuanp/nerdtree-git-plugin'
+" Python docstring generator
+Plug 'heavenshell/vim-pydocstring'
+" General-purpose command-line fuzzy finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Vim plugin which shows a git diff
+Plug 'airblade/vim-gitgutter'
+" Plugin to move selected lines up and down
+Plug 'matze/vim-move'
+" Vim plugin that adds additional text objects
+Plug 'wellle/targets.vim'
+" Buffer explorer
+Plug 'jlanzarotta/bufexplorer'
+" Visualize vim undo tree
+Plug 'simnalamburt/vim-mundo'
 
-" Required:
-call neobundle#end()
+" Initialize plugin system
+call plug#end()
 
 " Required:
 filetype plugin indent on
 
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-
 " Colorscheme
 syntax on
-hi clear
+" hi clear
 colorscheme gruvbox
 set background=dark
-set t_Co=256
-set clipboard=unnamedplus
-hi Normal ctermbg=None
+" hi NonText ctermbg=NONE
+" hi Normal guibg=NONE ctermbg=NONE
 
+" Set clipboard to global
+set clipboard=unnamedplus
 " Allow saving of files as sudo when I forgot to start vim using sudo.
 cmap w!! w !sudo tee > /dev/null %
 map <Leader>vs :vsplit 
 map <Leader>hs :split 
-" Remap escape key to jj
+" Remap escape key to jj, jk kj
 inoremap jj <Esc> 
+inoremap jk <Esc> 
+inoremap kj <Esc> 
 " Move between one displayed line, useful for wrapped lines
 nnoremap <Down> gj
 nnoremap <Up> gk
@@ -119,8 +107,13 @@ nnoremap <Return> i<Return><Esc>
 
 "NeoVim bindings
 if has('nvim')
-    tnoremap <Esc> <c-\><c-n>
+  " Escape in terminal switches to normal mode
+  tnoremap <Esc> <c-\><c-n>
 endif
+
+" Enable persistent undo so that undo history persists across vim sessions
+set undofile
+set undodir=~/.vim/undo
 
 " Options
 set number
@@ -160,14 +153,18 @@ let g:indent_guides_guide_size=0
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_color_change_percent=4
 
+"###### ALE
+" Enable completion where available.
+let g:ale_completion_enabled = 1
+
 "###### Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-let g:syntastic_always_populate_loc_list=1
-let g:syntastic_auto_loc_list=1
+let g:syntastic_always_populate_loc_list=0
+let g:syntastic_auto_loc_list=0
 let g:syntastic_loc_list_height=5
-let g:syntastic_check_on_open=1
+let g:syntastic_check_on_open=0
 let g:syntastic_check_on_wq=0
 
 let g:syntastic_java_checkers=['checkstyle', 'javac']
@@ -178,22 +175,21 @@ let g:syntastic_tex_checkers=['chktex']
 let g:syntastic_matlab_checkers=['mlint']
 let g:syntastic_text_checkers=['atdtool']
 let g:syntastic_scala_checkers=['scalac', 'fsc']
-let g:syntastic_python_checkers=['mypy', 'pycodestyle', 'Pylint', 'python']
+let g:syntastic_python_checkers=['mypy', 'pylint', 'python']
 map <Leader>S :SyntasticCheck<CR>
 
 " airline
 set laststatus=2
 let g:airline_powerline_fonts=1
-let g:airline_theme='gruvbox'
+let g:airline_theme='base16_monokai'
 " Show buffers on top
 let g:airline#extensions#tabline#enabled = 1
 
-"####### YouCompleteMe
-let g:ycm_python_binary_path = 'python'
-
-"##### nerdtree
+"##### NERDTree
 "autocmd vimenter * NERDTree
 map <Leader>N :NERDTreeToggle<CR>
+map <Leader>n :NERDTreeToggle<CR>
+map <C-n> :NERDTreeToggle<CR>
 
 " Tagbar
 map <Leader>t :TagbarToggle<CR>
@@ -214,13 +210,53 @@ map  n <Plug>(easymotion-next)
 let g:rainbow_active=1
 
 " Eclim
-let g:SuperTabDefaultCompletionType = 'context'
+"let g:SuperTabDefaultCompletionType = 'context'
 "let g:EclimCompletionMethod = 'omnifunc'
 "let g:SuperTabDefaultCompletionType = '<C-X><C-O>'
 
-" Vim ruby
+" ##### Vim ruby
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
 autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
 autocmd FileType ruby,eruby let g:rubycomplete_use_bundler = 1
 autocmd FileType ruby compiler ruby
+
+" ##### YCM
+" Use first python in path to support non-system pythons(e.g. virtualenv,
+" anaconda)
+let g:ycm_python_binary_path = 'python'
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+
+" ##### SuperTab
+"let g:SuperTabClosePreviewOnPopupClose = 1
+
+
+" ##### CtrlP
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+nnoremap <c-b> :CtrlPBuffer<CR>
+
+" ##### NERDCommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" ##### Pydocstring
+" autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
+
+" ##### indentLine
+" let g:indentLine_setColors = 0
+let g:indentLine_leadingSpaceEnabled = 1
+let g:indentLine_char = '┆'
+let g:indentLine_leadingSpaceChar = '·'
+
+" Vim mundo
+nnoremap <F5> :MundoToggle<CR>

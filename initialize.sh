@@ -1,6 +1,6 @@
-echo "Fetch NeoBundle"
-mkdir -p ~/.vim/bundle
-git clone https://github.com/Shougo/neobundle.vim ~/.vim/bundle/neobundle.vim
+echo "Fetch vim-plug"
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 echo "Create symlink for vimrc"
 ln -s ~/dotfiles/vimrc ~/.vimrc
 
