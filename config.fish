@@ -9,7 +9,7 @@ set -g theme_display_hg yes
 set -g theme_display_virtualenv yes
 set -g theme_display_ruby yes
 set -g theme_display_user no
-set -g theme_display_vi yes
+# set -g theme_display_vi yes
 set -g theme_display_date yes
 set -g theme_title_display_process yes
 set -g theme_title_display_path no
@@ -26,14 +26,13 @@ set -x VIRTUAL_ENV_DISABLE_PROMPT 1
 # Anaconda installation
 set -gx PATH ~/anaconda3/bin $PATH
 source ~/anaconda3/etc/fish/conf.d/conda.fish
-# Don't activate the conda env on start because it's slow
 #conda activate default
 
 # Add home local bin to path
 set -gx PATH ~/.local/bin $PATH
 
 # Set default editor
-set -gx EDITOR (which vim)
+set -gx EDITOR (which nvim)
 
 # Fix manpage issue by setting manpath
 set -gx MANPATH (manpath | string split ":")
@@ -41,4 +40,16 @@ set -gx MANPATH (manpath | string split ":")
 # RBEnv
 set -gx PATH $HOME/.rbenv/bin $PATH
 
-alias dco=docker-compose
+# Ask nicely
+function please; eval command sudo $history[1]; end
+
+# Abbreviations
+if status --is-interactive
+    set -g fish_user_abbreviations
+    abbr --add dco docker-compose
+    abbr --add g git
+    abbr --add la "ls -lah"
+    abbr --add ll "ls -lh"
+    abbr --add plz 'eval command sudo $history[1]'
+    abbr --add psql 'psql -h localhost -U postgres'
+end

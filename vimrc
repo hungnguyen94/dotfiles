@@ -1,6 +1,7 @@
 if has('nvim')
-  let $NVIM_TUI_ENABLE_TRUE_COLOR = 1
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=0
+  set termguicolors " Enable true color support
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
   set guicursor=
 endif
 
@@ -10,7 +11,6 @@ if has('gui_running')
   set guioptions-=L
 endif
 
-" Required:
 call plug#begin('~/.vim/plugged')
   Plug 'flazz/vim-colorschemes'                                     " Colorschemes
   Plug 'bling/vim-airline'                                          " Powerline-style bar
@@ -24,19 +24,16 @@ call plug#begin('~/.vim/plugged')
   Plug 'nathanaelkane/vim-indent-guides'                            " Visually display indent levels
   Plug 'ctrlpvim/ctrlp.vim'                                         " Full path fuzzy finder
   Plug 'junegunn/vim-easy-align'                                    " Easily align text
-  Plug 'easymotion/vim-easymotion'                                  " Simplify motions
-  Plug 'unblevable/quick-scope'                                     " Highlight target characters for f
   Plug 'tpope/vim-fugitive'                                         " Git wrapper for vim
   Plug 'luochen1990/rainbow'                                        " Color parenthesis levels
   Plug 'scrooloose/nerdcommenter'                                   " Improved code commenting features
-  Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }                       " Ruby vim support
   Plug 'christoomey/vim-tmux-navigator'                             " Tmux pane switching awareness
   Plug 'tmux-plugins/vim-tmux-focus-events'
-  Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }           " Code completion engine
+  Plug 'Valloric/YouCompleteMe', { 'do': 
+        \ './install.py --clang-completer --tern-completer' }       " Code completion engine
   Plug 'Xuyuanp/nerdtree-git-plugin'                                " Git for nerdtree
   " Plug 'heavenshell/vim-pydocstring'{ 'for': 'python' }           " Python docstring generator
-  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " General-purpose command-line fuzzy finder
-  Plug 'junegunn/fzf.vim'
+  Plug 'junegunn/fzf.vim'                                           " General-purpose command-line fuzzy finder
   Plug 'airblade/vim-gitgutter'                                     " Vim plugin which shows a git diff
   Plug 'matze/vim-move'                                             " Plugin to move selected lines up and down
   Plug 'wellle/targets.vim'                                         " Vim plugin that adds additional text objects
@@ -44,38 +41,41 @@ call plug#begin('~/.vim/plugged')
   Plug 'simnalamburt/vim-mundo'                                     " Visualize vim undo tree
   Plug 'mileszs/ack.vim'                                            " Ack in vim
   Plug 'terryma/vim-expand-region'                                  " Visually select increasingly larger regions of text
-  Plug 'sheerun/vim-polyglot'                                       " A collection of language packs for Vim
   Plug 'KeitaNakamura/neodark.vim'                                  " Neodark colorscheme
-  Plug 'vim-python/python-syntax'                                   " Improved Python syntax highlighting
+  Plug 'yuttie/comfortable-motion.vim'                              " Physics-based smooth scrolling
+  Plug 'unblevable/quick-scope'                                     " Highlight target characters for f
+  Plug 'easymotion/vim-easymotion'                                  " Simplify motions
+  Plug 'haya14busa/incsearch.vim'                                   " Incrementally highlight all pattern matches
+  Plug 'haya14busa/incsearch-easymotion.vim'                        " Easymotion integration for incsearch
+  Plug 'reedes/vim-pencil'                                          " Tweaks for writing text
+  Plug 'sheerun/vim-polyglot'                                       " A collection of language packs for Vim
 call plug#end()
 filetype plugin indent on
 
 " Colorscheme
-let g:neodark#use_256color=1 
+" let g:neodark#use_256color=0
 let g:neodark#terminal_transparent=1
+" let g:neodark#background='#202020'
+" let g:neodark#solid_vertsplit=1
 colorscheme neodark
-" set background=dark
+" let g:onedark_terminal_italics=1
 " hi NonText ctermbg=NONE
-" hi Normal guibg=NONE ctermbg=NONE
-
-
+hi Normal guibg=NONE ctermbg=NONE
 
 set clipboard=unnamedplus  " Set clipboard to global
-" Allow saving of files as sudo when I forgot to start vim using sudo.
-cmap w!! w !sudo tee > /dev/null %
-noremap <Leader>vs :vsplit 
-noremap <Leader>hs :split 
-" Remap escape key to jj, jk kj
-inoremap jj <Esc> 
-inoremap jk <Esc> 
-" Move between one displayed line, useful for wrapped lines
-nnoremap <Down> gj
-nnoremap <Up> gk
-vnoremap <Down> gj
-vnoremap <Up> gk
 
-" Insert a linebreak at the cursor
-nnoremap <Return> i<Return><Esc>
+cmap w!! w !sudo tee > /dev/null %| " Save file using sudo
+noremap <Leader>vs :vsplit|         " Split vertical
+noremap <Leader>hs :split|          " Split horizontal
+inoremap jj <Esc>|                  " Remap escape key to jj
+inoremap jk <Esc>|                  " Remap escape key to jk
+nnoremap <Down> gj|                 " Move between one displayed line, useful for wrapped lines
+nnoremap <Up> gk|                   " Move between one displayed line, useful for wrapped lines
+vnoremap <Down> gj|                 " Move between one displayed line, useful for wrapped lines
+vnoremap <Up> gk|                   " Move between one displayed line, useful for wrapped lines
+noremap 0 ^|                        " Go to the first non-blank character of a line
+noremap ^ 0|                        " Go to the first non-blank character of a line
+nnoremap <Return> i<Return><Esc>|   " Insert a linebreak at the cursor
 
 "NeoVim bindings
 if has('nvim')
@@ -97,6 +97,7 @@ set textwidth=0 " Line wrap (number of cols)
 set wrapmargin=0
 set showmatch
 set nohlsearch  " Dont highlight all matches
+set ignorecase
 set smartcase
 set incsearch   " Incremental search
 set autoindent  " Indent using spaces
@@ -117,13 +118,12 @@ let g:indent_guides_guide_size=0
 let g:indent_guides_enable_on_vim_startup=1
 let g:indent_guides_color_change_percent=4
 let g:indent_guides_auto_colors=0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
+" autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
 " autocmd VimEnter,Colorscheme * :hi CursorLine ctermbg=239
 " autocmd VimEnter,Colorscheme * :hi LineNr ctermfg=242
 
 "# ALE
-
 let g:ale_completion_enabled = 1                  " Enable completion where available.
 let g:ale_python_flake8_options = '--ignore E501' " Disable line too long error
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
@@ -154,12 +154,6 @@ vnoremap <Leader>]: :Tabularize /:\zs<CR>
 nnoremap <Leader>] :Tabularize /
 vnoremap <Leader>] :Tabularize /
 
-"# EasyMotion
-map ` <Plug>(easymotion-prefix)
-map  / <Plug>(easymotion-sn)
-omap / <Plug>(easymotion-tn)
-map  n <Plug>(easymotion-next)
-
 "# Rainbow Parenthesis
 let g:rainbow_active=1
 
@@ -176,8 +170,7 @@ autocmd FileType ruby,eruby let g:rubycomplete_use_bundler = 1
 autocmd FileType ruby compiler ruby
 
 "# YCM
-" Use first python in path to support non-system pythons (e.g. virtualenv, anaconda)
-let g:ycm_python_binary_path = 'python'
+let g:ycm_python_binary_path = 'python' " Use first python in path to support non-system pythons (e.g. virtualenv, anaconda)
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_autoclose_preview_window_after_completion = 1
 
@@ -206,11 +199,37 @@ let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace wh
 nnoremap <F5> :MundoToggle<CR>
 
 "# quick-scope
-
-let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']  " Trigger a highlight in the appropriate direction 
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']  " Trigger a highlight in the appropriate direction
 
 "# vim-easy-align
-" Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)| " Start interactive EasyAlign in visual mode (e.g. vipga)
+nmap ga <Plug>(EasyAlign)| " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+
+"# Pencil
+augroup pencil
+  autocmd!
+  autocmd FileType text         call pencil#init()
+  autocmd FileType markdown,mkd call pencil#init()
+                            \ | call lexical#init()
+                            \ | call litecorrect#init()
+                            \ | call textobj#quote#init()
+                            \ | call textobj#sentence#init()
+augroup END
+
+"# Comfortable motion
+let g:comfortable_motion_no_default_key_mappings = 1
+nmap <C-f> :call comfortable_motion#flick(200)<CR>
+nmap <C-b> :call comfortable_motion#flick(-200)<CR>
+
+"# Polyglot
+" let g:polyglot_disabled = ['markdown']
+
+"# EasyMotion
+let g:EasyMotion_smartcase = 1 " Enable case insensitive search
+map ` <Plug>(easymotion-prefix)| " EasyMotion prefix
+map / <Plug>(incsearch-easymotion-/)
+map ? <Plug>(incsearch-easymotion-?)
+omap / <Plug>(easymotion-tn)
+map  n <Plug>(easymotion-next)
+map  N <Plug>(easymotion-prev)
+nmap s <Plug>(easymotion-s)
