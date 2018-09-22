@@ -246,6 +246,7 @@ nmap s <Plug>(easymotion-s)
 
 "# Use deoplete.
 let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#jedi#show_docstring = 1
 inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 "
 let g:LanguageClient_serverCommands = {
@@ -255,3 +256,14 @@ let g:LanguageClient_serverCommands = {
 " Deoplete rust
 let g:deoplete#sources#rust#racer_binary = '/home/hung/.cargo/bin/racer'
 let g:deoplete#sources#rust#rust_source_path = '/home/hung/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
+
+" Language server protocol
+set hidden
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'nightly', 'rls'],
+    \ 'python': ['~/conda3/envs/py36/bin/pyls'],
+    \ }
+nnoremap <F6> :call LanguageClient_contextMenu()<CR>
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
