@@ -24,31 +24,27 @@ call plug#begin('~/.vim/plugged')
   Plug 'vim-airline/vim-airline-themes'                             " Airline themes
   Plug 'scrooloose/nerdtree'                                        " File browser within vim
   Plug 'w0rp/ale'                                                   " Syntax checker
-  Plug 'morhetz/gruvbox'                                            " Gruvbox colorscheme
+  " Plug 'morhetz/gruvbox'                                            " Gruvbox colorscheme
   Plug 'tpope/vim-surround'                                         " Easily add brackets, parentheses etc
   Plug 'tpope/vim-repeat'                                           " Enable repeating with plugin maps
-  " Plug 'ervandew/supertab'                                          " Auto completion using tab
-  Plug 'nathanaelkane/vim-indent-guides'                            " Visually display indent levels
-  Plug 'ctrlpvim/ctrlp.vim'                                         " Full path fuzzy finder
+  Plug 'ervandew/supertab'                                          " Auto completion using tab
+  " Plug 'nathanaelkane/vim-indent-guides'                            " Visually display indent levels
+  Plug 'Yggdroot/indentLine'                                        " Display indent lines
+  " Plug 'ctrlpvim/ctrlp.vim'                                         " Full path fuzzy finder
   Plug 'junegunn/vim-easy-align'                                    " Easily align text
-  Plug 'tpope/vim-fugitive'                                         " Git wrapper for vim
+  " Plug 'tpope/vim-fugitive'                                         " Git wrapper for vim
   Plug 'luochen1990/rainbow'                                        " Color parenthesis levels
   Plug 'scrooloose/nerdcommenter'                                   " Improved code commenting features
   Plug 'christoomey/vim-tmux-navigator'                             " Tmux pane switching awareness
   Plug 'tmux-plugins/vim-tmux-focus-events'
-  " Plug 'Valloric/YouCompleteMe', { 'do':
-        " \ './install.py
-        " \ --clang-completer
-        " \ --tern-completer
-        " \ --rust-completer' }                                       " Code completion engine
   Plug 'Xuyuanp/nerdtree-git-plugin'                                " Git for nerdtree
-  " Plug 'heavenshell/vim-pydocstring', { 'for': 'python' }           " Python docstring generator
   Plug 'junegunn/fzf.vim'                                           " General-purpose command-line fuzzy finder
   Plug 'airblade/vim-gitgutter'                                     " Vim plugin which shows a git diff
   Plug 'matze/vim-move'                                             " Plugin to move selected lines up and down
   Plug 'wellle/targets.vim'                                         " Vim plugin that adds additional text objects
   Plug 'jlanzarotta/bufexplorer'                                    " Buffer explorer
-  Plug 'simnalamburt/vim-mundo'                                     " Visualize vim undo tree
+  " Plug 'simnalamburt/vim-mundo'                                     " Visualize vim undo tree
+  Plug 'mbbill/undotree'                                            " Visualize vim undo tree
   Plug 'mileszs/ack.vim'                                            " Ack in vim
   Plug 'terryma/vim-expand-region'                                  " Visually select increasingly larger regions of text
   Plug 'KeitaNakamura/neodark.vim'                                  " Neodark colorscheme
@@ -59,7 +55,10 @@ call plug#begin('~/.vim/plugged')
   Plug 'haya14busa/incsearch-easymotion.vim'                        " Easymotion integration for incsearch
   Plug 'reedes/vim-pencil'                                          " Tweaks for writing text
   Plug 'sheerun/vim-polyglot'                                       " A collection of language packs for Vim
-  Plug 'tpope/vim-unimpaired'
+  Plug 'tpope/vim-unimpaired'                                       " Pairs of handy bracket mappings
+  Plug 'SirVer/ultisnips'                                           " Snippets engine
+  Plug 'honza/vim-snippets'                                         " Default snippets
+  Plug 'vim-ctrlspace/vim-ctrlspace'                                " tabs / buffers / files management / fast fuzzy searching
 call plug#end()
 
 
@@ -98,8 +97,10 @@ if has('nvim')
 endif
 
 
-set undofile          " Enable persistent undo so that undo history persists across vim sessions
-set undodir=~/.vim/undo
+if has('persistent_undo')
+  set undofile          " Enable persistent undo so that undo history persists across vim sessions
+  set undodir=~/.vim/undo
+endif
 
 " Options
 set number
@@ -127,11 +128,11 @@ set autoread    " Automatically refresh files
 set backspace=indent,eol,start
 
 "# Vim-indent-guides
-let g:indent_guides_start_level=1
-let g:indent_guides_guide_size=0
-let g:indent_guides_enable_on_vim_startup=1
-let g:indent_guides_color_change_percent=4
-let g:indent_guides_auto_colors=0
+" let g:indent_guides_start_level=1
+" let g:indent_guides_guide_size=0
+" let g:indent_guides_enable_on_vim_startup=1
+" let g:indent_guides_color_change_percent=4
+" let g:indent_guides_auto_colors=0
 " autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  ctermbg=235
 " autocmd VimEnter,Colorscheme * :hi IndentGuidesEven ctermbg=236
 " autocmd VimEnter,Colorscheme * :hi CursorLine ctermbg=239
@@ -142,10 +143,10 @@ let g:ale_completion_enabled = 1                  " Enable completion where avai
 let g:ale_python_flake8_options = '--ignore E501,E731' " Disable line too long error
 let g:ale_python_autopep8_options = '--ignore E501,E731'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_fix_on_save = 1                         " Run autopep8 on save to autoformat code
-let g:ale_fixers = {
-\   'python': ['autopep8'],
-\}
+let g:ale_fix_on_save = 0                         " Run autopep8 on save to autoformat code
+" let g:ale_fixers = {
+" \   'python': ['autopep8'],
+" \}
 let g:ale_linters = {
 \   'python': ['flake8', 'mypy'],
 \}
@@ -160,7 +161,6 @@ let g:airline#extensions#tmuxline#enabled = 1
 let g:airline#extensions#ale#enabled = 1
 
 "# NERDTree
-noremap <Leader>n :NERDTreeToggle<CR>
 noremap <C-n> :NERDTreeToggle<CR>
 
 "# Rainbow Parenthesis
@@ -171,42 +171,27 @@ let g:rainbow_active=1
 " let g:EclimCompletionMethod = 'omnifunc'
 " let g:SuperTabDefaultCompletionType = '<C-X><C-O>'
 
-"# Vim ruby
-autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
-autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-autocmd FileType ruby,eruby let g:rubycomplete_use_bundler = 1
-autocmd FileType ruby compiler ruby
-
-"# YCM
-let g:ycm_python_binary_path = 'python' " Use first python in path to support non-system pythons (e.g. virtualenv, anaconda)
-let g:ycm_autoclose_preview_window_after_insertion = 0
-let g:ycm_autoclose_preview_window_after_completion = 0
-let g:ycm_rust_src_path = '/home/hung/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src'
-
 "# SuperTab
-" let g:SuperTabClosePreviewOnPopupClose = 1
+let g:SuperTabDefaultCompletionType = "<c-n>"
+let g:SuperTabClosePreviewOnPopupClose = 0
 " let g:SuperTabCompleteCase = 1
 
 "# CtrlP
 let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files -co --exclude-standard']
+let g:ctrlp_cmd = 'CtrlPBuffer'
 " Buffer
 " nnoremap <c-b> :CtrlPBuffer<CR>
 
 "# NERDCommenter
-
 let g:NERDSpaceDelims = 1            " Add spaces after comment delimiters by default
 let g:NERDCompactSexyComs = 0        " Don't use compact syntax for prettified multi-line comments
 let g:NERDRemoveExtraSpaces = 0
 let g:NERDCommentEmptyLines = 1      " Allow commenting and inverting empty lines (useful when commenting a region)
 let g:NERDTrimTrailingWhitespace = 1 " Enable trimming of trailing whitespace when uncommenting
 
-"# Pydocstring
-autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 expandtab
-
-"# Vim mundo
-nnoremap <F5> :MundoToggle<CR>
+"# Vim undotree
+nnoremap <F5> :UndotreeToggle<CR>
 
 "# quick-scope
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']  " Trigger a highlight in the appropriate direction
@@ -247,11 +232,22 @@ nmap s <Plug>(easymotion-s)
 "# Use deoplete.
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#show_docstring = 1
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+let g:deoplete#enable_smart_case = 1
+" inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 "
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls']
-    \ }
+"use TAB as the mapping
+" inoremap <silent><expr> <TAB>
+      " \ pumvisible() ?  "\<C-n>" :
+      " \ <SID>check_back_space() ? "\<TAB>" :
+      " \ deoplete#mappings#manual_complete()
+" function! s:check_back_space() abort ""
+  " let col = col(.) - 1
+  " return !col || getline(.)[col - 1]  =~ s
+" endfunction ""
+"
+" inoremap <silent><expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<TAB>"
+" inoremap <expr><BS>  deoplete#smart_close_popup()."\<C-h>"
+
 
 " Deoplete rust
 let g:deoplete#sources#rust#racer_binary = '/home/hung/.cargo/bin/racer'
@@ -267,3 +263,16 @@ let g:LanguageClient_serverCommands = {
 nnoremap <F6> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+
+"# IndentLine
+let g:indentLine_enabled = 1
+let g:indentLine_leadingSpaceEnabled = 1
+let g:indentLine_leadingSpaceChar = '·'
+let g:indentLine_bufNameExclude = ['_.*', 'NERD_tree.*']
+let g:indentLine_char = '¦'
+let g:indentLine_setColors = 1
+let g:indentLine_setConceal = 1
+
+"# CtrlSpace
+let g:CtrlSpaceDefaultMappingKey = "<C-space> "
+let g:CtrlSpaceSymbols = { "CS": "#", "ALL": "∀" }
