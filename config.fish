@@ -42,26 +42,27 @@ set -gx PATH ~/.local/bin $PATH
 # Set default editor
 set -gx EDITOR (which nvim)
 
-# Fix manpage issue by setting manpath
-# set -gx MANPATH (manpath | string split ":")
-
+# Fzf plugin
+set -g FZF_LEGACY_KEYBINDINGS 0
+set -g FZF_TMUX 1
+set -g FZF_ENABLE_OPEN_PREVIEW 1
+set -g FZF_COMPLETE 2
 
 # Ask nicely
 # function please; eval command sudo $history[1]; end
 
-alias java-decompiler "java -cp ~/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/173.4548.28/plugins/java-decompiler/lib/java-decompiler.jar org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler -dgs=true"
-
 # Abbreviations
-if status --is-interactive
+if status --is-interactive # Add only for local session
     set -g fish_user_abbreviations
+
     abbr --add dco docker-compose
     abbr --add g git
+    abbr --add gst "git status"
+    abbr --add gts "git status"
     abbr --add la "exa --git -lah"
     abbr --add ll "exa --git -lah -T -L2"
-    # abbr --add ls "exa"
     abbr --add psql 'psql -h localhost -U postgres'
     abbr --add fzf "fzf --preview-window up:30%:wrap --preview 'echo {}'"
-    abbr --add java-decompiler "java -cp ~/.local/share/JetBrains/Toolbox/apps/IDEA-U/ch-0/173.4548.28/plugins/java-decompiler/lib/java-decompiler.jar org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler -dgs=true"
     abbr --add pypyenv source ~/.virtualenv/pypy35/bin/activate.fish
 
     # Hook to set this on every command
@@ -70,4 +71,12 @@ if status --is-interactive
         abbr please sudo $argv[1]
         abbr plz sudo $argv[1]
     end
+
+    # Hook to query pacman database if command is not found
+    function lookup_command_in_pacman --on-event fish_command_not_found
+      if [ (string length $argv[1]) -ge 4 ]
+        pacman -Fs $argv[1]
+      end
+    end
+
 end
