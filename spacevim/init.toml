@@ -1,0 +1,117 @@
+[options]
+  colorscheme = "gruvbox"
+  colorscheme_bg = "dark"
+  enable_guicolors = true
+  buffer_index_type = 4
+  windows_index_type = 4
+  enable_tabline_filetype_icon = true
+  enable_statusline_mode = false
+  statusline_unicode_symbols = true
+  vimcompatible = false
+  bootstrap_before = "myspacevim#before"
+  bootstrap_after = "myspacevim#after"
+  filemanager = "nerdtree"
+  sidebar_direction = "left"
+  disabled_plugins = ['vim-airline']
+
+[[custom_plugins]] # Color parenthesis levels
+  name = "luochen1990/rainbow"
+  merged = false
+
+[[custom_plugins]] # Adds additional text objects
+  name = "wellle/targets.vim"
+  merged = false
+
+[[custom_plugins]] # Save using sudo support
+  name = "lambdalisue/suda.vim"
+  merged = false
+
+[[custom_plugins]] # A collection of language packs for Vim
+  name = "sheerun/vim-polyglot"
+  merged = false
+
+[[custom_plugins]]
+  name = "Shougo/echodoc.vim"
+  merged = false
+
+[[custom_plugins]] # Override to the Rust branch whilst also loading spacevim config
+  name = "autozimu/LanguageClient-neovim"
+  rev = "next"
+  build = "bash install.sh"
+  merged = false
+
+[[custom_plugins]] # Autocomplete for emoji support
+  name = "fszymanski/deoplete-emoji"
+  merged = false
+
+[[custom_plugins]] # Custom load airline without spacevim config
+  name = "vim-airline/vim-airline"
+  merged = false
+
+[[layers]]
+  name = 'autocomplete'
+  auto-completion-return-key-behavior = "complete"
+  auto-completion-tab-key-behavior = "cycle"
+
+[[layers]] # Use airline instead
+  name = "core#statusline"
+  enable = false
+
+[[layers]] # Use airline instead
+  name = "core#tabline"
+  enable = false
+
+[[layers]]
+  name = "VersionControl"
+
+[[layers]]
+  name = "git"
+
+[[layers]]
+  name = 'colorscheme'
+
+[[layers]]
+  name = "fzf"
+
+# [[layers]]
+  # name = "lsp"
+  # filetypes = ["rust", "python", "c", "cpp", "scala"]
+  # [layers.override_cmd]
+    # rust = ["rustup", "run", "nightly", "rls"]
+    # python = ["/home/hung/conda3/envs/py36/bin/pyls"]
+    # c = ["ccls", "--log-file=/tmp/cc.log"]
+    # cpp = ["ccls", "--log-file=/tmp/cc.log"]
+    # cuda = ["ccls", "--log-file=/tmp/cc.log"]
+    # objc = ["ccls", "--log-file=/tmp/cc.log"]
+    # scala = ["metals-vim"]
+
+[[layers]]
+  name = "tmux"
+#
+[[layers]]
+  name = "lang#python"
+
+[[layers]]
+  name = "lang#scala"
+
+[[layers]]
+  name = "lang#rust"
+
+[[layers]]
+  name = "lang#java"
+
+[[layers]]
+  name = "lang#dockerfile"
+
+[[layers]]
+  name = "lang#sh"
+
+[[layers]]
+  name = "lang#c"
+  clang_executable = "/usr/bin/clang"
+  [layer.clang_std]
+    c = "c11"
+    cpp = "c++1z"
+    objc = "c11"
+    objcpp = "c++1z"
+
