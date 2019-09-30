@@ -51,7 +51,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'reedes/vim-pencil'                                          " Tweaks for writing text
   Plug 'sheerun/vim-polyglot'                                       " A collection of language packs for Vim
   Plug 'tpope/vim-unimpaired'                                       " Pairs of handy bracket mappings
-  Plug 'SirVer/ultisnips'                                           " Snippets engine
+  "Plug 'SirVer/ultisnips'                                           " Snippets engine
   Plug 'honza/vim-snippets'                                         " Default snippets
   Plug 'vim-ctrlspace/vim-ctrlspace'                                " tabs / buffers / files management / fast fuzzy searching
   Plug 'fszymanski/deoplete-emoji'                                  " Deoplete emoji completion
@@ -72,12 +72,13 @@ colorscheme neodark
 hi NonText ctermbg=NONE
 hi Normal guibg=NONE ctermbg=NONE
 
-set clipboard=unnamedplus  " Set clipboard to global
+set clipboard=unnamed " Set clipboard to global
 
 cmap w!! suda://%|                  " Save file using sudo
 " cmap w!! w !sudo tee > /dev/null %| " Save file using sudo
 noremap <Leader>vs :vsplit|         " Split vertical
 noremap <Leader>hs :split|          " Split horizontal
+inoremap ` <Esc>|                  " Remap escape key to jj
 inoremap jj <Esc>|                  " Remap escape key to jj
 inoremap jk <Esc>|                  " Remap escape key to jk
 nnoremap <Down> gj|                 " Move between one displayed line, useful for wrapped lines
@@ -109,8 +110,8 @@ set showmatch      " Briefly show matching bracket on insert
 set nohlsearch incsearch smartcase  " Dont highlight all matches, use incremental search
 set smartindent autoindent
 set expandtab smarttab " Use spaces for tab
-set softtabstop=4
-set shiftwidth=4
+set softtabstop=2
+set shiftwidth=2
 set showcmd     " Display pressed keys in normal
 set autoread    " Automatically refresh files
 set virtualedit+=block
