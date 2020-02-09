@@ -36,22 +36,24 @@ set -g theme_newline_prompt '$ '
 
 set -x VIRTUAL_ENV_DISABLE_PROMPT 1
 
-set -g FISH_KUBECTL_COMPLETION_TIMEOUT 5s
+set -g FISH_KUBECTL_COMPLETION_TIMEOUT 3s
 set -g FISH_KUBECTL_COMPLETION_COMPLETE_CRDS 0
+
 set -gx LSCOLORS "gxfxbEaEBxxEhEhBaDaCaD" 
+# Disable Telepresence telemetry
 set -gx SCOUT_DISABLE 1
 # Anaconda installation
-set -gx PATH ~/conda3/bin $PATH
+set -gx PATH $HOME/conda3/bin $PATH
 set -gx PATH $HOME/.cargo/bin $PATH
+set -gx PATH $HOME/.nix-profile/bin $PATH
 
-source ~/conda3/etc/fish/conf.d/conda.fish
+source $HOME/conda3/etc/fish/conf.d/conda.fish
 
-#set -gx STARDOG_HOME ~/Downloads/stardog
+# jenv stuff
+source (jenv init -|psub)
 
-# Reverse PATH macos
-set -gx PATH $PATH[-1..1]
 # Add home local bin to path
-#set -gx PATH ~/.local/bin $PATH
+set -gx PATH $HOME/.local/bin $PATH
 
 # Set default editor
 set -gx EDITOR (which nvim)
@@ -60,7 +62,6 @@ set -gx EDITOR (which nvim)
 set -g FZF_LEGACY_KEYBINDINGS 0
 set -g FZF_TMUX 1
 set -g FZF_ENABLE_OPEN_PREVIEW 1
-set -g FZF_COMPLETE 2
 
 # Ask nicely
 # function please; eval command sudo $history[1]; end
@@ -75,9 +76,7 @@ if status --is-interactive # Add only for local session
     abbr --add gts "git status"
     abbr --add la "exa --git -lah"
     abbr --add ll "exa --git -lah -T -L2"
-    # abbr --add psql 'psql -h localhost -U postgres'
     abbr --add fzf "fzf --preview-window up:30%:wrap --preview 'echo {}'"
-    abbr --add pypyenv source ~/.virtualenv/pypy35/bin/activate.fish
 
     # Hook to set this on every command
     function sudo_last_command --on-event fish_postexec
